@@ -75,7 +75,12 @@ app.use((req, res) => {
 
   store.dispatch(match(req.originalUrl, (error, redirectLocation, routerState) => {
     if (redirectLocation) {
-      res.redirect(redirectLocation.pathname + redirectLocation.search);
+      if (redirectLocation.state && redirectLocation.state.nextPathname) {
+        const queryString = qs.stringify({ next: redirectLocation.state.nextPathname });
+        res.redirect(redirectLocation.pathname + '?' + queryString); // + redirectLocation.search
+      } else {
+        res.redirect(redirectLocation.pathname + redirectLocation.search);
+      }
     } else if (error) {
       console.error('ROUTER ERROR:', pretty.render(error));
       res.status(500);

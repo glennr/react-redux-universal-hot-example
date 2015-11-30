@@ -28,7 +28,8 @@ function redirectPath(router) {
   const DEFAULT_PATH = '/loginSuccess';
   const { location } = router;
   const nextPathname = (location.state && location.state.nextPathname) ? location.state.nextPathname : null;
-  return (nextPathname || DEFAULT_PATH);
+  const nextPathFromQuery = (location.query && location.query.next) ? location.query.next : null;
+  return (nextPathname || nextPathFromQuery || DEFAULT_PATH);
 }
 
 @connectData(fetchData)
