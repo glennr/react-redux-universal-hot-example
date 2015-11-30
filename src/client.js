@@ -38,8 +38,11 @@ global.socket = initSocket();
 
 function createElement(Component, props) {
   if (Component.fetchData) {
-    Component.fetchData(store.getState, store.dispatch,
+//    setTimeout(() => {  // hack
+      Component.fetchData(store.getState, store.dispatch,
                         props.location, props.params);
+
+//    }, 0);
   }
   return React.createElement(Component, props);
 }

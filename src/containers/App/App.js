@@ -26,6 +26,7 @@ function fetchData(getState, dispatch) {
 @connect(
   state => ({user: state.auth.user}),
   {logout, updatePath})
+
 export default class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired,

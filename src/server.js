@@ -82,31 +82,30 @@ app.use((req, res) => {
       res.status(500);
       hydrateOnClient();
     } else {
-      try {
-        fetchAllData(
-          renderProps.components,
-          store.getState, store.dispatch,
-          renderProps.location,
-          renderProps.params
-        ).then(() => {
-          const component = (
-              <Provider store={store} key="provider">
-              <RoutingContext {...renderProps}/>
-              </Provider>
-          );
+      fetchAllData(
+        renderProps.components,
+        store.getState, store.dispatch,
+        renderProps.location,
+        renderProps.params
+      ).then(() => {
+        console.error('DATA FETCHING HUNKYDORY:');
+        const component = (
+            <Provider store={store} key="provider">
+            <RoutingContext {...renderProps}/>
+            </Provider>
+        );
 
-          const status = getStatusFromRoutes(renderProps.routes);
-          if (status) {
-            res.status(status);
-          }
-          res.send('<!doctype html>\n' +
-                   ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} component={component} store={store}/>));
-        });
-      } catch (err) {
+        const status = getStatusFromRoutes(renderProps.routes);
+        if (status) {
+          res.status(status);
+        }
+        res.send('<!doctype html>\n' +
+                 ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} component={component} store={store}/>));
+      }).catch((err) => {
         console.error('DATA FETCHING ERROR:', pretty.render(err));
         res.status(500);
         hydrateOnClient();
-      }
+      });
     }
   });
 });
