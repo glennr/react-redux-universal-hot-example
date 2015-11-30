@@ -22,16 +22,30 @@ function fetchData(getState, dispatch) {
   return Promise.all(promises);
 }
 
+// Returns the router location state for nextPathname if it
+// is present, otherwise the default signin route
+function redirectPath(router) {
+  const DEFAULT_PATH = '/loginSuccess';
+  const { location } = router;
+  const nextPathname = (location.state && location.state.nextPathname) ? location.state.nextPathname : null;
+  return (nextPathname || DEFAULT_PATH);
+}
+
 @connectData(fetchData)
 @connect(
-  state => ({user: state.auth.user}),
+  state => ( {
+    user: state.auth.user,
+    router: state.router,
+  }),
   {logout, pushState})
+
 export default class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
     user: PropTypes.object,
     logout: PropTypes.func.isRequired,
-    pushState: PropTypes.func.isRequired
+    pushState: PropTypes.func.isRequired,
+    router: PropTypes.object.isRequired,
   };
 
   static contextTypes = {
@@ -41,7 +55,7 @@ export default class App extends Component {
   componentWillReceiveProps(nextProps) {
     if (!this.props.user && nextProps.user) {
       // login
-      this.props.pushState(null, '/loginSuccess');
+      this.props.pushState(null, redirectPath(this.props.router));
     } else if (this.props.user && !nextProps.user) {
       // logout
       this.props.pushState(null, '/');

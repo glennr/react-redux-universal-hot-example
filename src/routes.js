@@ -18,8 +18,8 @@ export default (store) => {
     function checkAuth() {
       const { auth: { user }} = store.getState();
       if (!user) {
-        // oops, not logged in, so can't be here!
-        replaceState(null, '/');
+        // oops, not logged in, so go and auth first, then redirect back
+        replaceState({ nextPathname: nextState.location.pathname }, '/login');
       }
       cb();
     }
