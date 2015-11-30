@@ -27,6 +27,7 @@ describe('getDataDependencies', () => {
     CompWithFetchData.fetchData = (_getState, _dispatch, _location, _params) => {
       return `fetchData ${_getState} ${_dispatch} ${_location} ${_params}`;
     };
+
     CompWithFetchDataDeferred = () =>
       <div />;
 
@@ -37,6 +38,7 @@ describe('getDataDependencies', () => {
 
   it('should get fetchDatas', () => {
     const deps = getDataDependencies([
+      undefined,
       CompWithFetchData,
       CompWithNoData,
       CompWithFetchDataDeferred
@@ -49,6 +51,7 @@ describe('getDataDependencies', () => {
 
   it('should get fetchDataDeferreds', () => {
     const deps = getDataDependencies([
+      undefined,
       CompWithFetchData,
       CompWithNoData,
       CompWithFetchDataDeferred

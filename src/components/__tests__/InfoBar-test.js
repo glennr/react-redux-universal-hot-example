@@ -4,10 +4,11 @@ import {renderIntoDocument} from 'react-addons-test-utils';
 import { expect} from 'chai';
 import { InfoBar } from 'components';
 import { Provider } from 'react-redux';
-import {reduxReactRouter} from 'redux-router';
+import {syncReduxAndRouter} from 'redux-simple-router';
 import createHistory from 'history/lib/createMemoryHistory';
 import createStore from 'redux/create';
 import ApiClient from 'helpers/ApiClient';
+
 const client = new ApiClient();
 
 describe('InfoBar', () => {
@@ -23,7 +24,10 @@ describe('InfoBar', () => {
     }
   };
 
-  const store = createStore(reduxReactRouter, null, createHistory, client, mockStore);
+  const store = createStore(client, mockStore);
+  const history = createHistory();
+  syncReduxAndRouter(history, store);
+
   const renderer = renderIntoDocument(
     <Provider store={store} key="provider">
       <InfoBar/>
