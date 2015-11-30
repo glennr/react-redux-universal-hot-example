@@ -13,10 +13,8 @@ import PrettyError from 'pretty-error';
 import http from 'http';
 import SocketIo from 'socket.io';
 
-import {Router, RoutingContext, match} from 'react-router';
-import createHistory from 'history/lib/createMemoryHistory';
+import {RoutingContext, match} from 'react-router';
 import {Provider} from 'react-redux';
-import qs from 'query-string';
 import getRoutes from './routes';
 import getStatusFromRoutes from './helpers/getStatusFromRoutes';
 import fetchAllData from './helpers/fetchAllData';
@@ -104,8 +102,7 @@ app.use((req, res) => {
           res.send('<!doctype html>\n' +
                    ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} component={component} store={store}/>));
         });
-      }
-      catch(err) {
+      } catch (err) {
         console.error('DATA FETCHING ERROR:', pretty.render(err));
         res.status(500);
         hydrateOnClient();
