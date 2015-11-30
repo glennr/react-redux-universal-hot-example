@@ -12,7 +12,7 @@ export default (components, getState, dispatch, location, params) => {
         });
     };
 
-    return Promise.all(getDataDependencies(components, getState, dispatch, location, params))
+    Promise.all(getDataDependencies(components, getState, dispatch, location, params))
       .then(doTransition)
       .catch(error => {
         // TODO: You may want to handle errors for fetchData here
